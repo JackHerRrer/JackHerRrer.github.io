@@ -70,8 +70,8 @@ let chart = new Chart(ctx, {
                     type: 'linear',
                     display: true,
                     ticks: {
-                        min: Math.min(Math.floor(Math.min(...data[0]['temperature']) - 2), DEFAULT_MIN_TEMP), 
-                        max: Math.max(Math.min(...data[0]['temperature']) + 2, DEFAULT_MAX_TEMP)
+                        min: Math.min(Math.floor(Math.min(...data[0]['temperature']) - 1), DEFAULT_MIN_TEMP), 
+                        max: Math.max(Math.max(...data[0]['temperature']) + 1, DEFAULT_MAX_TEMP)
                     },
                     position: 'right',
                 }
