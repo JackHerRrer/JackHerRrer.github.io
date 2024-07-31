@@ -1,3 +1,6 @@
+let DEFAULT_MIN_TEMP = 20
+let DEFAULT_MAX_TEMP = 32
+
 let ctx = document.getElementById("myChart").getContext("2d");
 
 // Sample data
@@ -49,7 +52,7 @@ let chart = new Chart(ctx, {
                 {
                     id: 'y_density',
                     ticks: {
-                        min: 990, 
+                        min: Math.min(990, Math.floor(Math.min(...data[0]['density'])/10))*10,
                         max: Math.ceil(Math.max(...data[0]['density'])/10)*10
                     },              
                 },
@@ -58,8 +61,8 @@ let chart = new Chart(ctx, {
                     type: 'linear',
                     display: true,
                     ticks: {
-                        min: Math.min(Math.round(Math.min(...data[0]['temperature']) - 2), 20), 
-                        max: Math.max(Math.min(...data[0]['temperature']) + 2, 32)
+                        min: Math.min(Math.floor(Math.min(...data[0]['temperature']) - 2), DEFAULT_MIN_TEMP), 
+                        max: Math.max(Math.min(...data[0]['temperature']) + 2, DEFAULT_MAX_TEMP)
                     },
                     position: 'right',
                 }
