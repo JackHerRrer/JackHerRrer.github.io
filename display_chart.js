@@ -1,6 +1,13 @@
 let DEFAULT_MIN_TEMP = 20
 let DEFAULT_MAX_TEMP = 32
 
+// Update title with date of first sample
+const date = new Date(data[0]['time'][0]);
+const formatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium' });
+const formattedDate = formatter.format(date);
+let title = document.getElementById("main_title");
+title.innerHTML = 'Fermentation en cours - ' + formattedDate;
+
 let ctx = document.getElementById("myChart").getContext("2d");
 
 // Sample data
