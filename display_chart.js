@@ -17,9 +17,11 @@ let dataset = {
     {
         label: "temperature",
         data: data[0]['temperature'],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(240, 113, 74, 1)',
+        backgroundColor: 'rgba(255, 99, 132, 0)',
         borderWidth: 1,
         yAxisID: "y_temp",
+        
     }]
 };
 
