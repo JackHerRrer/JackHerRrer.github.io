@@ -6,9 +6,17 @@ let dataset = {
     datasets: [{
         label: "density",
         data: data[0]['density'],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(245, 108, 10, 1)',
+        backgroundColor: 'rgba(99, 99, 255, 0.2)',
+        borderColor: 'rgba(99, 108, 255, 1)',
         borderWidth: 1,
+        yAxisID: "y_density",
+    },
+    {
+        label: "temperature",
+        data: data[0]['temperature'],
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderWidth: 1,
+        yAxisID: "y_temp",
     }]
 };
 
@@ -16,7 +24,6 @@ let chart = new Chart(ctx, {
     type: 'line',
     data: dataset,
     options: {
-
         scales: {
             xAxes: [{
                 type: 'time',
@@ -38,12 +45,25 @@ let chart = new Chart(ctx, {
                     }
                 }
             }],
-            yAxes: [{
-                ticks: {
-                    min: 990, 
-                    max: Math.ceil(Math.max(...data[0]['density'])/10)*10
+            yAxes: [
+                {
+                    id: 'y_density',
+                    ticks: {
+                        min: 990, 
+                        max: Math.ceil(Math.max(...data[0]['density'])/10)*10
+                    },              
+                },
+                {
+                    id: 'y_temp',
+                    type: 'linear',
+                    display: true,
+                    ticks: {
+                        min: Math.min(Math.round(Math.min(...data[0]['temperature']) - 2), 20), 
+                        max: Math.max(Math.min(...data[0]['temperature']) + 2, 32)
+                    },
+                    position: 'right',
                 }
-            }],
+            ],
         }
     }
 });
