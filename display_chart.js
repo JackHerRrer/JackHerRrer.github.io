@@ -1,5 +1,5 @@
-let DEFAULT_MIN_TEMP = 20
-let DEFAULT_MAX_TEMP = 32
+let DEFAULT_MIN_TEMP = 24
+let DEFAULT_MAX_TEMP = 30
 
 // Update title with date of first sample
 const date = new Date(data[0]['time'][0]);
@@ -10,16 +10,21 @@ title.innerHTML = 'Fermentation en cours - ' + formattedDate;
 
 let ctx = document.getElementById("myChart").getContext("2d");
 
+const under = (ctx, value) => ctx.p0.parsed.y < DEFAULT_MIN_TEMP || ctx.p1.parsed.y < DEFAULT_MIN_TEMP ? value : undefined;
+const above = (ctx, value) => ctx.p0.parsed.y > DEFAULT_MAX_TEMP || ctx.p1.parsed.y > DEFAULT_MAX_TEMP ? value : undefined;
+
 // Sample data
 let dataset = {
     labels: data[0]['time'],
     datasets: [{
         label: "density",
         data: data[0]['density'],
-        backgroundColor: 'rgba(99, 99, 255, 0.2)',
+        backgroundColor: 'rgba(99, 99, 255, 0.05)',
         borderColor: 'rgba(99, 108, 255, 1)',
         borderWidth: 1,
         yAxisID: "y_density",
+        pointStyle: false,
+        fill : "start",
     },
     {
         label: "temperature",
@@ -28,7 +33,13 @@ let dataset = {
         backgroundColor: 'rgba(255, 99, 132, 0)',
         borderWidth: 1,
         yAxisID: "y_temp",
-        
+        pointStyle: false,
+        fill : "shape",
+        segment: {
+            borderColor: ctx => under(ctx, 'rgb(214, 69, 92)') || above(ctx, 'rgb(214, 69, 92)'),
+            backgroundColor: ctx => under(ctx, 'rgb(219, 118, 137,0.2)') || above(ctx, 'rgb(219, 118, 137,0.2)'),
+            borderWidth: ctx => under(ctx, 3) || above(ctx, 3),
+        },
     }]
 };
 
@@ -37,45 +48,27 @@ let chart = new Chart(ctx, {
     data: dataset,
     options: {
         scales: {
-            xAxes: [{
+            x: {
                 type: 'time',
-                grid:{
-                    color: 'yellow'
-                },
                 time: {
                     unit: 'day',
-                    displayFormats: {
-                      'millisecond': 'DD MMM HH:mm',
-                      'second': 'DD MMM HH:mm',
-                      'minute': 'DD MMM HH:mm',
-                      'hour': 'DD MMM HH:mm',
-                      'day': 'DD MMM',
-                      'week': 'DD MMM HH:mm',
-                      'month': 'DD MMM HH:mm',
-                      'quarter': 'DD MMM HH:mm',
-                      'year': 'DD MMM HH:mm',
-                    }
                 }
-            }],
-            yAxes: [
-                {
-                    id: 'y_density',
-                    ticks: {
-                        min: Math.min(990, Math.floor(Math.min(...data[0]['density'])/10))*10,
-                        max: Math.ceil(Math.max(...data[0]['density'])/10)*10
-                    },              
-                },
-                {
-                    id: 'y_temp',
+            },
+            y_density: {
+                min: Math.min(990, Math.floor(Math.min(...data[0]['density'])/10))*10,
+                max: Math.ceil(Math.max(...data[0]['density'])/10)*10 + 10,
+            },
+            y_temp :{
                     type: 'linear',
                     display: true,
-                    ticks: {
-                        min: Math.min(Math.floor(Math.min(...data[0]['temperature']) - 1), DEFAULT_MIN_TEMP), 
-                        max: Math.max(Math.max(...data[0]['temperature']) + 1, DEFAULT_MAX_TEMP)
-                    },
+                    min: Math.min(Math.floor(Math.min(...data[0]['temperature']) - 1), DEFAULT_MIN_TEMP), 
+                    max: Math.max(Math.max(...data[0]['temperature']) + 1, DEFAULT_MAX_TEMP),
                     position: 'right',
+                    grid: {
+                        display : false,
+                    }
                 }
-            ],
+
         }
     }
 });
