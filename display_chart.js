@@ -1,17 +1,18 @@
 let DEFAULT_MIN_TEMP = 24
 let DEFAULT_MAX_TEMP = 30
 
+const under = (ctx, value) => ctx.p0.parsed.y < DEFAULT_MIN_TEMP || ctx.p1.parsed.y < DEFAULT_MIN_TEMP ? value : undefined;
+const above = (ctx, value) => ctx.p0.parsed.y > DEFAULT_MAX_TEMP || ctx.p1.parsed.y > DEFAULT_MAX_TEMP ? value : undefined;
+
+// Set default language for date formating
+moment.locale('fr');
+
 // Update title with date of first sample
-const date = new Date(data[0]['time'][0]);
-const formatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium' });
-const formattedDate = formatter.format(date);
-let title = document.getElementById("main_title");
-title.innerHTML = 'Fermentation en cours - ' + formattedDate;
+formattedDate = moment(data[0]['time'][0]).format('DD MMM y');
+document.getElementById("main_title").innerHTML = 'Fermentation en cours - ' + formattedDate;
 
 let ctx = document.getElementById("myChart").getContext("2d");
 
-const under = (ctx, value) => ctx.p0.parsed.y < DEFAULT_MIN_TEMP || ctx.p1.parsed.y < DEFAULT_MIN_TEMP ? value : undefined;
-const above = (ctx, value) => ctx.p0.parsed.y > DEFAULT_MAX_TEMP || ctx.p1.parsed.y > DEFAULT_MAX_TEMP ? value : undefined;
 
 // Sample data
 let dataset = {
