@@ -25,7 +25,7 @@ let dataset = {
         borderWidth: 1,
         yAxisID: "y_density",
         pointStyle: false,
-        fill : "start",
+        fill: "start",
     },
     {
         label: "temperature",
@@ -35,7 +35,7 @@ let dataset = {
         borderWidth: 1,
         yAxisID: "y_temp",
         pointStyle: false,
-        fill : "shape",
+        fill: "shape",
         segment: {
             borderColor: ctx => under(ctx, 'rgb(214, 69, 92)') || above(ctx, 'rgb(214, 69, 92)'),
             backgroundColor: ctx => under(ctx, 'rgb(219, 118, 137,0.2)') || above(ctx, 'rgb(219, 118, 137,0.2)'),
@@ -56,21 +56,20 @@ let chart = new Chart(ctx, {
                 }
             },
             y_density: {
-                min: Math.min(990, Math.floor(Math.min(...data[0]['density'])/10))*10,
-                max: Math.ceil(Math.max(...data[0]['density'])/10)*10 + 10,
+                min: Math.min(990, Math.floor(Math.min(...data[0]['density']) / 10)) * 10,
+                max: Math.ceil(Math.max(...data[0]['density']) / 10) * 10 + 10,
             },
-            y_temp :{
-                    type: 'linear',
-                    display: true,
-                    min: Math.min(Math.floor(Math.min(...data[0]['temperature']) - 1), DEFAULT_MIN_TEMP), 
-                    max: Math.max(Math.max(...data[0]['temperature']) + 1, DEFAULT_MAX_TEMP),
-                    position: 'right',
-                    grid: {
-                        display : false,
-                    }
+            y_temp: {
+                type: 'linear',
+                display: true,
+                min: Math.min(Math.floor(Math.min(...data[0]['temperature']) - 1), DEFAULT_MIN_TEMP),
+                max: Math.max(Math.max(...data[0]['temperature']) + 1, DEFAULT_MAX_TEMP),
+                position: 'right',
+                grid: {
+                    display: false,
                 }
+            }
 
         }
     }
 });
-
