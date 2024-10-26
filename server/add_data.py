@@ -10,7 +10,7 @@ script_dir = os.path.dirname(script_path)
 # use script dir has base path for the data file, that way the script can be launched from anywhere
 data_file = f'{script_dir}/../data/data.js'
 
-def add_data(time:int, density:int):
+def add_data(time:int, density:int, temperature:float, battery:float, angle:float):
   """Add a time and density value to the first dataset of data.js
 
   Args:
@@ -32,9 +32,24 @@ def add_data(time:int, density:int):
   subst2 = f"\\g<1>{density}, ],"
   result2 = re.sub(regex2, subst2, result, 1, re.MULTILINE)
 
+  # Add the temperature to the first data set found in the file 
+  regex3 = r"(temperature.*)\],?"
+  subst3 = f"\\g<1>{temperature}, ],"
+  result3 = re.sub(regex3, subst3, result2, 1, re.MULTILINE)
+
+  # Add the battery to the first data set found in the file 
+  regex4 = r"(battery.*)\],?"
+  subst4 = f"\\g<1>{battery}, ],"
+  result4 = re.sub(regex4, subst4, result3, 1, re.MULTILINE)
+
+  # Add the angle to the first data set found in the file 
+  regex5 = r"(angle.*)\],?"
+  subst5 = f"\\g<1>{angle}, ],"
+  result5 = re.sub(regex5, subst5, result4, 1, re.MULTILINE)
+
   # Write the file out again
   with open(data_file, 'w') as file:
-    file.write(result2)
+    file.write(result5)
 
 def add_dataset():
   
@@ -47,6 +62,9 @@ def add_dataset():
         'comment':'',
         'time': [],
         'density': [],
+        'temperature': [],
+        'battery': [],
+        'angle': [],
     },
 """
 
@@ -63,4 +81,4 @@ def add_dataset():
 
 
 add_dataset()
-add_data(1717533700000, 1000)
+add_data(1717533700000, 1000, 28.652, 5.33, 88.36)
