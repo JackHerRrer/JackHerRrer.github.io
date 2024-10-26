@@ -1,4 +1,14 @@
 import re
+import os
+
+# get absolute path of the script 
+script_path = os.path.abspath(__file__)
+
+# get dir of the script
+script_dir = os.path.dirname(script_path)
+
+# use script dir has base path for the data file, that way the script can be launched from anywhere
+data_file = f'{script_dir}/../data/data.js'
 
 def add_data(time:int, density:int):
   """Add a time and density value to the first dataset of data.js
@@ -9,7 +19,7 @@ def add_data(time:int, density:int):
   """
 
   # Read in the file
-  with open('data/data.js', 'r') as file:
+  with open(data_file, 'r') as file:
     filedata = file.read()
 
   # Add the time to the first data set found in the file 
@@ -23,13 +33,13 @@ def add_data(time:int, density:int):
   result2 = re.sub(regex2, subst2, result, 1, re.MULTILINE)
 
   # Write the file out again
-  with open('data/data.js', 'w') as file:
+  with open(data_file, 'w') as file:
     file.write(result2)
 
 def add_dataset():
   
   # Read in the file and turn it to a list of strings
-  with open('data/data.js', 'r') as file:
+  with open(data_file, 'r') as file:
     lines = file.readlines()
 
   # The text that will be added
@@ -46,7 +56,7 @@ def add_dataset():
   lines.insert(insert_index, empty_dataset)
   print(insert_index)
 
-  with open('data/data.js', 'w') as file:
+  with open(data_file, 'w') as file:
     for l in lines:
       file.write(l)
       print(l)
