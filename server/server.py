@@ -3,9 +3,20 @@ import socket
 import json
 from datetime import datetime
 import time
+import gspread
+from google.oauth2.service_account import Credentials
+
 
 ACK = (chr(6)).encode()  # ASCII ACK (Acknowledge)
 NAK = (chr(21)).encode()  # ASCII NAK (Not Acknowledged)
+
+scopes = ["https://www.googleapis.com/auth/spreadsheets"]
+creds = Credentials.from_service_account_file("credentials.json", scopes=scopes)
+client = gspread.authorize(creds)
+
+workbook_id = "1aS_RncSOZyQ2PjkBUbK2wP3NuweIIooTjVOnxhCtmzk"
+workbook = client.open_by_key(workbook_id)
+current_sheet = workbook.sheet1
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
     """
@@ -43,13 +54,24 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
             if self.data:
                 try:
                     self.json_data = json.loads(self.data)
-                    self.date = round(time.time())
                     print(f"[{datetime.now().strftime('%H:%M:%S')}] JSON reçu :")
                     print(self.json_data)
                     self.request.sendall(ACK)
+
+                    row_values=[
+                        datetime.now().strftime('%m/%d/%Y %H:%M:%S'), 
+                        self.json_data['gravity'] * 1000, 
+                        self.json_data['temperature'], 
+                        self.json_data['battery']
+                    ]
+                    current_sheet.append_row(row_values, value_input_option='USER_ENTERED')
+
+
                 except json.JSONDecodeError:
-                    print(f"[{datetime.now().strftime('%H:%M:%S')}] JSON invalide")
+                    print(f"[{datetime.now().strftime('%m/%d/%Y, %H:%M:%S')}] JSON invalide")
                     self.request.sendall(NAK)
+
+
 
         except Exception as e:
             print(f"[{datetime.now().strftime('%H:%M:%S')}] Erreur inattendue : {e}")
