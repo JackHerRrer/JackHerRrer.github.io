@@ -21,7 +21,7 @@ sudo nmcli con modify hotspot_cave wifi.hidden on
 ```bash
 sudo nano /etc/sysctl.conf
 ```
-uncomment : #net.ipv4.ip_forward=1
+uncomment: `#net.ipv4.ip_forward=1`
 
 
 ### Set firewall
@@ -38,7 +38,30 @@ sudo nmtui
 ```
 
 
-
 ## Server installation
 
-python3-pip
+```bash
+sudo apt install python3-venv
+sudo python3 -m venv /opt/venv/
+
+sudo chown -R pi /opt/venv/
+export PATH=/opt/venv/bin:$PATH
+pip install --upgrade pip wheel
+pip install -r requirements.txt
+```
+
+## Simple connection to raspberry
+
+1. On, the host machine, add the host to `~/.ssh/config`
+```
+Host cave
+    Hostname raspberrypi.local
+    User pi
+
+```
+2. Copy your ssh pub key on the raspberry
+```bash
+# On the host machine
+ssh-copy-id cave
+
+```
