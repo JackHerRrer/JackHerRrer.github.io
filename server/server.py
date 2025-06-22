@@ -21,7 +21,7 @@ ACK = (chr(6)).encode()  # ASCII ACK (Acknowledge)
 NAK = (chr(21)).encode()  # ASCII NAK (Not Acknowledged)
 
 scopes = ["https://www.googleapis.com/auth/spreadsheets"]
-creds = Credentials.from_service_account_file("/home/pi/iSpindleServer/server/credentials.json", scopes=scopes)
+creds = Credentials.from_service_account_file("/home/pi/JackHerRrer.github.io/server/credentials.json", scopes=scopes)
 client = gspread.authorize(creds)
 
 workbook_id = "1aS_RncSOZyQ2PjkBUbK2wP3NuweIIooTjVOnxhCtmzk"
