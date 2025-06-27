@@ -1,0 +1,10 @@
+[Unit]
+Description=Server retrieving data from iSpindle and sending it to a spreadsheet
+StartLimitIntervalSec=0
+RestartSec=10
+
+[Service]
+Type=simple
+ExecStart=/opt/venv/bin/python /home/pi/JackHerRrer.github.io/server/server.py
+User=pi 
+Restart=always
