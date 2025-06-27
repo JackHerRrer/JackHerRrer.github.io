@@ -52,7 +52,7 @@ check_internet(){
 }
 
 check_received_data(){
-    return journalctl --since -10min --boot -t iSpindleServer | grep "name" -q; then
+    return journalctl --since -10min --boot -t iSpindleServer | grep "name" -q
 }
 
 repair_internet_connection(){
