@@ -2,8 +2,8 @@
 Description="triggers a service every 10 min after the reboot (first occurrence is 10min after reboot) 
 
 [Timer]
-OnBootSec="10 min"
-OnUnitActiveSec="10 min"
+OnBootSec=10min
+OnUnitActiveSec=10min
 
 [Install]
 WantedBy=timers.target
