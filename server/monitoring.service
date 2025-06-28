@@ -5,3 +5,6 @@ Description=Monitor connections and iSpindle server and repair them if required
 Type=oneshot
 ExecStart=/home/pi/JackHerRrer.github.io/server/test_logging.sh
 User=pi 
+
+[Install]
+WantedBy=multi-user.target
